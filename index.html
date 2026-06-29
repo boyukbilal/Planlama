@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>Bilal Finance v3</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>Bilal Finance</h1>
+    <p id="todayText">Kişisel finans panelin</p>
+  </div>
+  <button id="exportBtn">Yedek</button>
+</header>
+
+<main>
+  <section class="hero">
+    <small>Bugünkü öneri</small>
+    <h2 id="dailyAdvice">Veriler yükleniyor...</h2>
+  </section>
+
+  <section class="grid">
+    <div class="card"><span>Bu Ay Gelir</span><strong id="monthIncome">₺0</strong></div>
+    <div class="card"><span>Bu Ay Harcama</span><strong id="monthExpense">₺0</strong></div>
+    <div class="card"><span>Bu Ay Birikim</span><strong id="monthSaving">₺0</strong></div>
+    <div class="card"><span>Kart Borçları</span><strong id="cardDebt">₺0</strong></div>
+  </section>
+
+  <section class="goal">
+    <div class="goal-top">
+      <b>🏍 Motor Fonu</b>
+      <span id="goalText">₺0 / ₺250.000</span>
+    </div>
+    <div class="bar"><div id="goalBar"></div></div>
+  </section>
+
+  <section class="panel">
+    <h2>📱 Telefon Taksiti</h2>
+    <div class="two">
+      <div class="mini"><span>Aylık Taksit</span><b>₺13.000</b><small>15-18 arası ödenecek</small></div>
+      <div class="mini"><span>Kalan Ay</span><b id="phoneMonths">5</b><small>Ödedikçe azalır</small></div>
+    </div>
+    <button class="full" onclick="payPhone()">Telefon Taksiti Ödedim</button>
+  </section>
+
+  <section class="quick">
+    <button onclick="quickIncome('Çalıştım')">✅ Çalıştım<br><small>+₺3000</small></button>
+    <button onclick="quickIncome('Ek Vardiya')">➕ Ek Vardiya<br><small>+₺3000</small></button>
+    <button onclick="openExpense('Kahve',400)">☕ Kahve</button>
+    <button onclick="openExpense('Market','')">🛒 Market</button>
+    <button onclick="openExpense('Yakıt','')">⛽ Yakıt</button>
+    <button onclick="openExpense('Vodafone','')">📱 Vodafone</button>
+  </section>
+
+  <section class="panel" id="expensePanel">
+    <h2>Harcama Ekle</h2>
+    <div class="form">
+      <input id="desc" placeholder="Açıklama örn: Starbucks">
+      <input id="amount" type="number" placeholder="Tutar">
+      <select id="category">
+        <option>Kahve</option><option>Vodafone</option><option>Market</option><option>Yakıt</option>
+        <option>Yemek</option><option>Telefon Taksiti</option><option>Kart Ödemesi</option><option>Motor Fonu</option><option>Diğer</option>
+      </select>
+      <select id="payment">
+        <option>Yapı Kredi</option><option>Akbank</option><option>Nakit</option>
+      </select>
+      <button onclick="addExpense()">Harcamayı Kaydet</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Kart Ödemesi</h2>
+    <div class="form">
+      <select id="paidCard"><option>Yapı Kredi</option><option>Akbank</option></select>
+      <input id="paidAmount" type="number" placeholder="Ödenen tutar">
+      <button onclick="payCard()">Kart Ödemesi Kaydet</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Motor Fonuna Para Ekle</h2>
+    <div class="form">
+      <input id="fundAmount" type="number" placeholder="Tutar">
+      <button onclick="addFund()">Motor Fonuna Ekle</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Kart Durumu</h2>
+    <div class="two">
+      <div class="mini"><span>Yapı Kredi</span><b id="ykDebt">₺0</b><small>Ekstre 12 / Son ödeme 22</small></div>
+      <div class="mini"><span>Akbank</span><b id="akDebt">₺0</b><small>Ekstre 15 / Son ödeme 25</small></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Ödeme Takvimi</h2>
+    <div id="paymentCalendar"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Kategori Raporu</h2>
+    <div id="categoryReport"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Ayarlar ve Yedek</h2>
+    <div class="form">
+      <input id="vardiyaSetting" type="number" placeholder="Vardiya ücreti">
+      <input id="goalSetting" type="number" placeholder="Motor hedefi">
+      <button onclick="saveSettings()">Ayarları Kaydet</button>
+      <button onclick="exportCSV()">CSV Yedek Al</button>
+      <input id="importFile" type="file" accept="application/json">
+      <button onclick="importBackup()">JSON Yedeği Geri Yükle</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Son Kayıtlar</h2>
+    <div id="list"></div>
+  </section>
+</main>
+
+<nav>
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})">🏠 Ana</button>
+  <button onclick="document.querySelector('.quick').scrollIntoView({behavior:'smooth'})">⚡ Hızlı</button>
+  <button onclick="document.querySelector('#expensePanel').scrollIntoView({behavior:'smooth'})">➕ Ekle</button>
+  <button onclick="document.querySelector('#list').scrollIntoView({behavior:'smooth'})">📋 Kayıt</button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
