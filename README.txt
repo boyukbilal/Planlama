@@ -1,13 +1,14 @@
-Bilal Finance PWA v5
+Bilal Finance PWA v6
 
-Eklenen özellikler:
-- Güncel Kasa kartı
-- Başlangıç kasası girme
-- Ekstra para ekleme
-- Ekstra para hızlı butonu
-- Kasa hesabı: başlangıç kasa + gelirler - nakit harcamalar - kart ödemeleri - motor fonu
+Eklenenler:
+- Büyük Güncel Kasam ekranı
+- Toplam Varlığım alanı
+- Ekstra Para butonu
+- Başlangıç kasası
+- 24/48 vardiya durumu
+- Motor hedef tahmini
+- Büyük + hızlı erişim butonu
+- Daha güçlü akıllı öneri
 
-Güncelleme:
-GitHub > bilal-finance > Add file > Upload files ile bu ZIP içindeki dosyaları yükle.
-Commit changes de.
-Büyük güncellemeden önce uygulamadaki Yedek butonuna bas.
+Güncellemeden önce Yedek al.
+GitHub'da eski dosyaların üstüne bu ZIP içindeki dosyaları yükle ve Commit changes de.
