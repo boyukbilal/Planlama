@@ -11,3 +11,5 @@ h2{font-size:18px;margin:0 0 12px}.form{display:grid;gap:10px}input,select{width
 .item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.item small{color:var(--muted)}.income{color:var(--green)}.expense{color:#fca5a5}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{background:#0b1220;border:1px solid var(--line);border-radius:18px;padding:14px}.mini small{color:var(--muted);display:block;margin-top:6px}.delete{background:#3f1d1d;padding:9px 11px;border-radius:12px;margin-left:6px}
 .status{float:right;padding:4px 8px;border-radius:999px;background:#1f2937;color:#bfdbfe}
 nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(15,23,42,.96);border-top:1px solid #243244}nav button{background:#1f2937;padding:12px 8px}
+
+.cash-card{grid-column:1 / -1;background:linear-gradient(135deg,#064e3b,#111827)}

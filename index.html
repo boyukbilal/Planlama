@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f172a">
-  <title>Bilal Finance v4</title>
+  <title>Bilal Finance v5</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -28,6 +28,7 @@
     <div class="card"><span>Bu Ay Harcama</span><strong id="monthExpense">₺0</strong></div>
     <div class="card"><span>Bu Ay Birikim</span><strong id="monthSaving">₺0</strong></div>
     <div class="card"><span>Kart Borçları</span><strong id="cardDebt">₺0</strong></div>
+    <div class="card cash-card"><span>Güncel Kasa</span><strong id="currentCash">₺0</strong></div>
   </section>
 
   <section class="goal">
@@ -36,6 +37,22 @@
       <span id="goalText">₺0 / ₺250.000</span>
     </div>
     <div class="bar"><div id="goalBar"></div></div>
+  </section>
+
+
+  <section class="panel" id="cashPanel">
+    <h2>💰 Kasa Yönetimi</h2>
+    <div class="two">
+      <div class="mini"><span>Başlangıç Kasası</span><b id="startCashText">₺0</b><small>Şu an elindeki para</small></div>
+      <div class="mini"><span>Güncel Kasa</span><b id="currentCashText">₺0</b><small>Otomatik hesaplanır</small></div>
+    </div>
+    <div class="form" style="margin-top:12px">
+      <input id="startCashInput" type="number" placeholder="Şu an elimde olan para">
+      <button onclick="setStartCash()">Başlangıç Kasasını Kaydet</button>
+      <input id="extraIncomeDesc" placeholder="Ekstra gelir açıklaması örn: borç iadesi">
+      <input id="extraIncomeAmount" type="number" placeholder="Ekstra gelen para">
+      <button onclick="addExtraIncome()">Ekstra Parayı Ekle</button>
+    </div>
   </section>
 
   <section class="panel">
@@ -50,6 +67,7 @@
   <section class="quick">
     <button onclick="quickIncome('Çalıştım')">✅ Çalıştım<br><small>+₺3000</small></button>
     <button onclick="quickIncome('Ek Vardiya')">➕ Ek Vardiya<br><small>+₺3000</small></button>
+    <button onclick="openExtraIncome()">💵 Ekstra Para</button>
     <button onclick="openExpense('Kahve',400)">☕ Kahve</button>
     <button onclick="openExpense('Market','')">🛒 Market</button>
     <button onclick="openExpense('Yakıt','')">⛽ Yakıt</button>

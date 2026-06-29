@@ -1,5 +1,5 @@
-let data = JSON.parse(localStorage.getItem("bilalFinanceV3") || "null") || {
-  settings:{vardiya:3000,motorGoal:250000,phoneMonths:5},
+let data = JSON.parse(localStorage.getItem("bilalFinanceV5") || localStorage.getItem("bilalFinanceV3") || "null") || {
+  settings:{vardiya:3000,motorGoal:250000,phoneMonths:5,startCash:0},
   records:[],
   motorFund:0,
   paid:{'Yapı Kredi':0,'Akbank':0},
@@ -7,7 +7,7 @@ let data = JSON.parse(localStorage.getItem("bilalFinanceV3") || "null") || {
 };
 
 function money(n){ return new Intl.NumberFormat("tr-TR",{style:"currency",currency:"TRY",maximumFractionDigits:0}).format(Number(n)||0); }
-function persist(){ localStorage.setItem("bilalFinanceV3", JSON.stringify(data)); render(); }
+function persist(){ localStorage.setItem("bilalFinanceV5", JSON.stringify(data)); render(); }
 function currentMonthRecord(r){const d=new Date(r.date), now=new Date(); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();}
 
 function quickIncome(type){
@@ -41,6 +41,57 @@ function addFund(){
   data.records.unshift({id:crypto.randomUUID(),date:new Date().toISOString(),type:"Birikim",category:"Motor Fonu",payment:"Nakit",desc:"Motor fonuna aktarıldı",amount});
   document.getElementById("fundAmount").value=""; persist();
 }
+
+function ensureCashSetting(){
+  if(data.settings.startCash===undefined) data.settings.startCash=0;
+}
+
+function openExtraIncome(){
+  document.querySelector("#cashPanel").scrollIntoView({behavior:"smooth"});
+  setTimeout(()=>document.getElementById("extraIncomeAmount").focus(),350);
+}
+
+function setStartCash(){
+  const amount=Number(document.getElementById("startCashInput").value);
+  if(amount<0 || isNaN(amount)){ alert("Geçerli bir kasa tutarı yazmalısın."); return; }
+  ensureCashSetting();
+  data.settings.startCash=amount;
+  document.getElementById("startCashInput").value="";
+  persist();
+  alert("Başlangıç kasası kaydedildi.");
+}
+
+function addExtraIncome(){
+  const amount=Number(document.getElementById("extraIncomeAmount").value);
+  if(!amount || amount<=0){ alert("Ekstra gelen para tutarını yazmalısın."); return; }
+  data.records.unshift({
+    id:crypto.randomUUID(),
+    date:new Date().toISOString(),
+    type:"Gelir",
+    category:"Ekstra Para",
+    payment:"Nakit",
+    desc:document.getElementById("extraIncomeDesc").value || "Ekstra para",
+    amount
+  });
+  document.getElementById("extraIncomeAmount").value="";
+  document.getElementById("extraIncomeDesc").value="";
+  persist();
+}
+
+function calculateCash(){
+  ensureCashSetting();
+  let cash=Number(data.settings.startCash)||0;
+  data.records.forEach(r=>{
+    const amount=Number(r.amount)||0;
+    if(r.type==="Gelir") cash+=amount;
+    if(r.type==="Harcama" && r.payment==="Nakit") cash-=amount;
+    if(r.type==="Birikim") cash-=amount;
+    if(r.type==="Ödeme") cash-=amount;
+  });
+  return cash;
+}
+
+
 function saveSettings(){
   const v=Number(document.getElementById("vardiyaSetting").value), g=Number(document.getElementById("goalSetting").value);
   if(v>0) data.settings.vardiya=v; if(g>0) data.settings.motorGoal=g;
@@ -79,10 +130,13 @@ function importBackup(){
 }
 function render(){
   const now=new Date();
-  document.getElementById("todayText").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"}) + " • v4";
+  document.getElementById("todayText").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"}) + " • v5";
   document.getElementById("vardiyaSetting").value=data.settings.vardiya;
   document.getElementById("goalSetting").value=data.settings.motorGoal;
+  ensureCashSetting();
   document.getElementById("phoneMonths").textContent=data.settings.phoneMonths;
+  document.getElementById("startCashText").textContent=money(data.settings.startCash);
+  document.getElementById("startCashInput").value=data.settings.startCash || "";
 
   let income=0, expense=0, cat={};
   data.records.forEach(r=>{ if(currentMonthRecord(r)){ if(r.type==="Gelir") income+=Number(r.amount); if(r.type==="Harcama"){ expense+=Number(r.amount); cat[r.category]=(cat[r.category]||0)+Number(r.amount); } }});
@@ -91,6 +145,9 @@ function render(){
   document.getElementById("monthExpense").textContent=money(expense);
   document.getElementById("monthSaving").textContent=money(income-expense);
   document.getElementById("cardDebt").textContent=money(totalDebt);
+  const currentCash=calculateCash();
+  document.getElementById("currentCash").textContent=money(currentCash);
+  document.getElementById("currentCashText").textContent=money(currentCash);
   document.getElementById("ykDebt").textContent=money(debt["Yapı Kredi"]);
   document.getElementById("akDebt").textContent=money(debt["Akbank"]);
   document.getElementById("goalText").textContent=`${money(data.motorFund)} / ${money(data.settings.motorGoal)}`;
@@ -100,6 +157,7 @@ function render(){
   if(income>0){ const saveRate=(income-expense)/income; if(saveRate>=0.30) advice="Güzel gidiyorsun. Bu ay birikim oranın yüksek."; else if(saveRate>=0.10) advice="İyi gidiyorsun ama harcamaları biraz daha kontrol et."; else advice="Bu ay harcamalar gelire çok yaklaşmış. Kart harcamalarını azalt."; }
   if(totalDebt>25000) advice="Kart borçları yükselmiş. Önce kart ödemelerine odaklan.";
   if(data.settings.phoneMonths===0) advice="Telefon taksiti bitti. Artık o parayı motor fonuna aktarabilirsin.";
+  if(calculateCash()<0) advice="Kasanda eksi görünüm var. Başlangıç kasanı veya nakit harcamalarını kontrol et.";
   document.getElementById("dailyAdvice").textContent=advice;
 
   document.getElementById("paymentCalendar").innerHTML=[
