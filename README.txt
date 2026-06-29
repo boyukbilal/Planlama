@@ -1,14 +1,5 @@
-Bilal Finance PWA v6
+Bilal Finance PWA v7
 
-Eklenenler:
-- Büyük Güncel Kasam ekranı
-- Toplam Varlığım alanı
-- Ekstra Para butonu
-- Başlangıç kasası
-- 24/48 vardiya durumu
-- Motor hedef tahmini
-- Büyük + hızlı erişim butonu
-- Daha güçlü akıllı öneri
+Eklenenler: sayfa sayfa yapı, döviz/altın portföyü, banka hesapları, bilgisayar hedefi, net varlık, portföy özeti.
 
-Güncellemeden önce Yedek al.
-GitHub'da eski dosyaların üstüne bu ZIP içindeki dosyaları yükle ve Commit changes de.
+Güncellemeden önce Yedek al. GitHub'da eski dosyaların üstüne bu ZIP içindeki dosyaları yükle ve Commit changes de.

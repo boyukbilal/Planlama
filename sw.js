@@ -1,3 +1,1 @@
-const CACHE="bilal-finance-v6";
-self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","index.html","style.css","app.js","manifest.json","icon.svg"]))));
-self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+const CACHE="bilal-finance-v7";self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","index.html","style.css","app.js","manifest.json","icon.svg"]))));self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));

@@ -1,187 +1,54 @@
-<!doctype html>
-<html lang="tr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0f172a">
-  <title>Bilal Finance v6</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-  <div>
-    <h1>Bilal Finance</h1>
-    <p id="todayText">Kişisel finans panelin • v6</p>
-  </div>
-  <button id="exportBtn">Yedek</button>
-</header>
-
+<!doctype html><html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a"><title>Bilal Finance v7</title>
+<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"></head><body>
+<header><div><h1>Bilal Finance</h1><p id="todayText">v7</p></div><button id="exportBtn">Yedek</button></header>
 <main>
-  <section class="cashHero">
-    <small>💰 Güncel Kasam</small>
-    <h2 id="bigCash">₺0</h2>
-    <p id="cashSub">Kasayı güncel tutmak için başlangıç paranı gir.</p>
-  </section>
+<section id="home" class="page active">
+<div class="cashHero"><small>💰 Güncel Kasam</small><h2 id="bigCash">₺0</h2><p id="cashSub">Net varlık otomatik hesaplanır.</p></div>
+<div class="hero"><small>🤖 Finans Asistanı</small><h2 id="advice">Kayıt ekleyerek başla.</h2></div>
+<div class="grid"><div class="card"><span>Bu Ay Gelir</span><strong id="mIncome">₺0</strong></div><div class="card"><span>Bu Ay Harcama</span><strong id="mExpense">₺0</strong></div><div class="card"><span>Kart Borcu</span><strong id="cardsDebt">₺0</strong></div><div class="card"><span>Net Varlık</span><strong id="netWealth">₺0</strong></div></div>
+<div class="panel"><h2>🏍 Motor Hedefi</h2><div class="top"><b id="motorText">₺0 / ₺250.000</b></div><div class="bar"><div id="motorBar"></div></div><p class="muted" id="forecast">Tahmin için fona para ekle.</p></div>
+<div class="panel"><h2>📅 Vardiya Durumu</h2><div class="two"><div class="mini"><span>Plan</span><b>24 / 48</b></div><div class="mini"><span>Bugün</span><b id="shiftToday">Ayarlanmadı</b><small id="shiftHint"></small></div></div></div>
+</section>
 
-  <section class="hero">
-    <small>🧠 Akıllı öneri</small>
-    <h2 id="dailyAdvice">Veriler yükleniyor...</h2>
-  </section>
+<section id="quick" class="page">
+<div class="panel"><h2>⚡ Hızlı İşlem</h2><div class="quick">
+<button onclick="quickIncome('Çalıştım')">✅ Çalıştım<br><small>+₺3000</small></button><button onclick="quickIncome('Ek Vardiya')">➕ Ek Vardiya<br><small>+₺3000</small></button>
+<button onclick="show('cash');setTimeout(()=>document.getElementById('extraAmount').focus(),200)">💵 Ekstra Para</button><button onclick="openExpense('Kahve',400)">☕ Kahve</button>
+<button onclick="openExpense('Market','')">🛒 Market</button><button onclick="openExpense('Yakıt','')">⛽ Yakıt</button><button onclick="openExpense('Vodafone','')">📱 Vodafone</button><button onclick="show('goals')">🎯 Hedef</button>
+</div></div>
+<div class="panel"><h2>Harcama Ekle</h2><div class="form"><input id="desc" placeholder="Açıklama"><input id="amount" type="number" placeholder="Tutar"><select id="category"><option>Kahve</option><option>Vodafone</option><option>Market</option><option>Yakıt</option><option>Yemek</option><option>Telefon Taksiti</option><option>Diğer</option></select><select id="payment"><option>Yapı Kredi</option><option>Akbank</option><option>Nakit</option></select><button onclick="addExpense()">Kaydet</button></div></div>
+</section>
 
-  <section class="grid">
-    <div class="card"><span>Bu Ay Gelir</span><strong id="monthIncome">₺0</strong></div>
-    <div class="card"><span>Bu Ay Harcama</span><strong id="monthExpense">₺0</strong></div>
-    <div class="card"><span>Bu Ay Birikim</span><strong id="monthSaving">₺0</strong></div>
-    <div class="card"><span>Kart Borçları</span><strong id="cardDebt">₺0</strong></div>
-    <div class="card cash-card"><span>Toplam Varlığım</span><strong id="totalWealth">₺0</strong></div>
-  </section>
+<section id="cash" class="page">
+<div class="panel"><h2>💰 Kasa</h2><div class="two"><div class="mini"><span>Başlangıç</span><b id="startCashText">₺0</b></div><div class="mini"><span>Güncel</span><b id="cashNow">₺0</b></div></div><div class="form"><input id="startCashInput" type="number" placeholder="Şu an elimde olan para"><button onclick="setStartCash()">Başlangıç Kasasını Kaydet</button><input id="extraDesc" placeholder="Ekstra gelir açıklaması"><input id="extraAmount" type="number" placeholder="Ekstra gelen para"><button onclick="addExtra()">Ekstra Parayı Ekle</button></div></div>
+<div class="panel"><h2>🏦 Banka Hesapları</h2><div class="form"><input id="accName" placeholder="Hesap adı"><input id="accAmount" type="number" placeholder="Tutar"><button onclick="addAccount()">Hesap Ekle/Güncelle</button></div><div id="accounts"></div></div>
+</section>
 
-  <section class="goal">
-    <div class="goal-top">
-      <b>🏍 Motor Fonu</b>
-      <span id="goalText">₺0 / ₺250.000</span>
-    </div>
-    <div class="bar"><div id="goalBar"></div></div>
-    <p id="goalForecast" class="muted">Hedef tahmini için kayıt ekle.</p>
-  </section>
+<section id="cards" class="page">
+<div class="panel"><h2>💳 Kartlar</h2><div class="two"><div class="mini"><span>Yapı Kredi</span><b id="ykDebt">₺0</b><small>Ekstre 12 / Son ödeme 22</small></div><div class="mini"><span>Akbank</span><b id="akDebt">₺0</b><small>Ekstre 15 / Son ödeme 25</small></div></div></div>
+<div class="panel"><h2>Kart Ödemesi</h2><div class="form"><select id="paidCard"><option>Yapı Kredi</option><option>Akbank</option></select><input id="paidAmount" type="number" placeholder="Ödenen tutar"><button onclick="payCard()">Kart Ödemesi Kaydet</button></div></div>
+<div class="panel"><h2>📱 Telefon Taksiti</h2><div class="two"><div class="mini"><span>Aylık</span><b>₺13.000</b></div><div class="mini"><span>Kalan Ay</span><b id="phoneMonths">5</b></div></div><button class="full" onclick="payPhone()">Telefon Taksiti Ödedim</button></div>
+<div class="panel"><h2>Ödeme Takvimi</h2><div id="calendar"></div></div>
+</section>
 
-  <section class="panel">
-    <h2>📅 Vardiya Durumu</h2>
-    <div class="two">
-      <div class="mini"><span>Çalışma Planı</span><b>24 / 48</b><small>24 saat çalış, 48 saat dinlen</small></div>
-      <div class="mini"><span>Bugün</span><b id="shiftToday">Ayarlanmadı</b><small id="shiftHint">Başlangıç vardiya tarihini gir.</small></div>
-    </div>
-    <div class="form" style="margin-top:12px">
-      <input id="shiftStartDate" type="date">
-      <button onclick="saveShiftStart()">Vardiya Başlangıcını Kaydet</button>
-    </div>
-  </section>
+<section id="portfolio" class="page">
+<div class="panel"><h2>💱 Döviz / Altın</h2><div class="form"><select id="assetType"><option>USD</option><option>EUR</option><option>GBP</option><option>CHF</option><option>Gram Altın</option><option>Çeyrek Altın</option><option>Bitcoin</option><option>Diğer</option></select><input id="assetQty" type="number" placeholder="Miktar"><input id="assetRate" type="number" placeholder="TL karşılığı / kur"><button onclick="addAsset()">Varlık Ekle/Güncelle</button></div><p class="muted">Kur şimdilik manuel girilir.</p><div id="assets"></div></div>
+<div class="panel"><h2>📊 Portföy Özeti</h2><div class="two"><div class="mini"><span>Kasa + Hesap</span><b id="cashAccTotal">₺0</b></div><div class="mini"><span>Döviz/Altın</span><b id="assetTotal">₺0</b></div><div class="mini"><span>Hedef Fonları</span><b id="fundTotal">₺0</b></div><div class="mini"><span>Net Varlık</span><b id="portNet">₺0</b></div></div></div>
+</section>
 
-  <section class="quick">
-    <button onclick="quickIncome('Çalıştım')">✅ Çalıştım<br><small>+₺3000</small></button>
-    <button onclick="quickIncome('Ek Vardiya')">➕ Ek Vardiya<br><small>+₺3000</small></button>
-    <button onclick="openExtraIncome()">💵 Ekstra Para</button>
-    <button onclick="openExpense('Kahve',400)">☕ Kahve</button>
-    <button onclick="openExpense('Market','')">🛒 Market</button>
-    <button onclick="openExpense('Yakıt','')">⛽ Yakıt</button>
-    <button onclick="openExpense('Vodafone','')">📱 Vodafone</button>
-    <button onclick="document.querySelector('#fundPanel').scrollIntoView({behavior:'smooth'})">🏍 Motor Fonu</button>
-  </section>
+<section id="goals" class="page">
+<div class="panel"><h2>🎯 Hedefler</h2><div class="goal"><b id="motorText2">Motor: ₺0 / ₺250.000</b><div class="bar"><div id="motorBar2"></div></div></div><div class="goal"><b id="pcText">Bilgisayar: ₺0 / ₺80.000</b><div class="bar"><div id="pcBar"></div></div></div></div>
+<div class="panel"><h2>Fona Para Ekle</h2><div class="form"><select id="fundTarget"><option>Motor</option><option>Bilgisayar</option></select><input id="fundAmount" type="number" placeholder="Tutar"><button onclick="addFund()">Fona Ekle</button></div></div>
+</section>
 
-  <section class="panel" id="cashPanel">
-    <h2>💰 Kasa Yönetimi</h2>
-    <div class="two">
-      <div class="mini"><span>Başlangıç Kasası</span><b id="startCashText">₺0</b><small>Şu an elindeki para</small></div>
-      <div class="mini"><span>Güncel Kasa</span><b id="currentCashText">₺0</b><small>Otomatik hesaplanır</small></div>
-    </div>
-    <div class="form" style="margin-top:12px">
-      <input id="startCashInput" type="number" placeholder="Şu an elimde olan para">
-      <button onclick="setStartCash()">Başlangıç Kasasını Kaydet</button>
-      <input id="extraIncomeDesc" placeholder="Ekstra gelir açıklaması örn: borç iadesi">
-      <input id="extraIncomeAmount" type="number" placeholder="Ekstra gelen para">
-      <button onclick="addExtraIncome()">Ekstra Parayı Ekle</button>
-    </div>
-  </section>
+<section id="shift" class="page"><div class="panel"><h2>📅 Vardiya</h2><div class="two"><div class="mini"><span>Bugün</span><b id="shiftToday2">Ayarlanmadı</b><small id="shiftHint2"></small></div><div class="mini"><span>Bu Ay Vardiya</span><b id="shiftCount">0</b></div></div><div class="form"><input id="shiftStart" type="date"><button onclick="saveShift()">Vardiya Başlangıcını Kaydet</button></div></div></section>
 
-  <section class="panel">
-    <h2>📱 Telefon Taksiti</h2>
-    <div class="two">
-      <div class="mini"><span>Aylık Taksit</span><b>₺13.000</b><small>15-18 arası ödenecek</small></div>
-      <div class="mini"><span>Kalan Ay</span><b id="phoneMonths">5</b><small>Ödedikçe azalır</small></div>
-    </div>
-    <button class="full" onclick="payPhone()">Telefon Taksiti Ödedim</button>
-  </section>
+<section id="reports" class="page"><div class="panel"><h2>📊 Kategori Raporu</h2><div id="catReport"></div></div><div class="panel"><h2>Son Kayıtlar</h2><div id="records"></div></div></section>
 
-  <section class="panel" id="expensePanel">
-    <h2>Harcama Ekle</h2>
-    <div class="form">
-      <input id="desc" placeholder="Açıklama örn: Starbucks">
-      <input id="amount" type="number" placeholder="Tutar">
-      <select id="category">
-        <option>Kahve</option><option>Vodafone</option><option>Market</option><option>Yakıt</option>
-        <option>Yemek</option><option>Telefon Taksiti</option><option>Kart Ödemesi</option><option>Motor Fonu</option><option>Diğer</option>
-      </select>
-      <select id="payment">
-        <option>Yapı Kredi</option><option>Akbank</option><option>Nakit</option>
-      </select>
-      <button onclick="addExpense()">Harcamayı Kaydet</button>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>Kart Ödemesi</h2>
-    <div class="form">
-      <select id="paidCard"><option>Yapı Kredi</option><option>Akbank</option></select>
-      <input id="paidAmount" type="number" placeholder="Ödenen tutar">
-      <button onclick="payCard()">Kart Ödemesi Kaydet</button>
-    </div>
-  </section>
-
-  <section class="panel" id="fundPanel">
-    <h2>Motor Fonuna Para Ekle</h2>
-    <div class="form">
-      <input id="fundAmount" type="number" placeholder="Tutar">
-      <button onclick="addFund()">Motor Fonuna Ekle</button>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>Kart Durumu</h2>
-    <div class="two">
-      <div class="mini"><span>Yapı Kredi</span><b id="ykDebt">₺0</b><small>Ekstre 12 / Son ödeme 22</small></div>
-      <div class="mini"><span>Akbank</span><b id="akDebt">₺0</b><small>Ekstre 15 / Son ödeme 25</small></div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>Ödeme Takvimi</h2>
-    <div id="paymentCalendar"></div>
-  </section>
-
-  <section class="panel">
-    <h2>Kategori Raporu</h2>
-    <div id="categoryReport"></div>
-  </section>
-
-  <section class="panel">
-    <h2>Ayarlar ve Yedek</h2>
-    <div class="form">
-      <input id="vardiyaSetting" type="number" placeholder="Vardiya ücreti">
-      <input id="goalSetting" type="number" placeholder="Motor hedefi">
-      <button onclick="saveSettings()">Ayarları Kaydet</button>
-      <button onclick="exportCSV()">CSV Yedek Al</button>
-      <input id="importFile" type="file" accept="application/json">
-      <button onclick="importBackup()">JSON Yedeği Geri Yükle</button>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>🔄 Uygulama Güncelleme Rehberi</h2>
-    <div class="row"><b>1</b> Yeni ZIP dosyasını indir.</div>
-    <div class="row"><b>2</b> iPhone Dosyalar uygulamasında ZIP’e dokunup klasöre çıkar.</div>
-    <div class="row"><b>3</b> GitHub → bilal-finance projesine gir.</div>
-    <div class="row"><b>4</b> Add file → Upload files seç.</div>
-    <div class="row"><b>5</b> index.html, style.css, app.js, manifest.json, sw.js, icon.svg dosyalarını yükle.</div>
-    <div class="row"><b>6</b> Commit changes de. 1-2 dakika sonra uygulama güncellenir.</div>
-    <p class="muted">Not: Büyük güncellemeden önce uygulamada Yedek butonuna bas.</p>
-  </section>
-
-  <section class="panel">
-    <h2>Son Kayıtlar</h2>
-    <div id="list"></div>
-  </section>
+<section id="settings" class="page"><div class="panel"><h2>⚙️ Ayarlar</h2><div class="form"><input id="vardiyaSet" type="number" placeholder="Vardiya ücreti"><input id="motorSet" type="number" placeholder="Motor hedefi"><input id="pcSet" type="number" placeholder="Bilgisayar hedefi"><button onclick="saveSettings()">Ayarları Kaydet</button><button onclick="exportCSV()">CSV Yedek Al</button><input id="importFile" type="file" accept="application/json"><button onclick="importBackup()">JSON Yedeği Geri Yükle</button></div></div><div class="panel"><h2>🔄 Güncelleme</h2><div class="row">GitHub → bilal-finance → Add file → Upload files → dosyaları yükle → Commit changes.</div></div></section>
 </main>
-
-<button class="fab" onclick="document.querySelector('.quick').scrollIntoView({behavior:'smooth'})">＋</button>
-
-<nav>
-  <button onclick="window.scrollTo({top:0,behavior:'smooth'})">🏠 Ana</button>
-  <button onclick="document.querySelector('.quick').scrollIntoView({behavior:'smooth'})">⚡ Hızlı</button>
-  <button onclick="document.querySelector('#expensePanel').scrollIntoView({behavior:'smooth'})">➕ Ekle</button>
-  <button onclick="document.querySelector('#list').scrollIntoView({behavior:'smooth'})">📋 Kayıt</button>
-</nav>
-
-<script src="app.js"></script>
-</body>
-</html>
+<button class="fab" onclick="show('quick')">＋</button>
+<nav><button onclick="show('home')">🏠 Ana</button><button onclick="show('quick')">⚡ İşlem</button><button onclick="show('cash')">💰 Kasa</button><button onclick="show('cards')">💳 Kart</button><button onclick="show('portfolio')">💱 Portföy</button><button onclick="show('reports')">📊 Rapor</button></nav>
+<script src="app.js"></script></body></html>
