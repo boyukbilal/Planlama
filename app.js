@@ -79,7 +79,7 @@ function importBackup(){
 }
 function render(){
   const now=new Date();
-  document.getElementById("todayText").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"});
+  document.getElementById("todayText").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"}) + " • v4";
   document.getElementById("vardiyaSetting").value=data.settings.vardiya;
   document.getElementById("goalSetting").value=data.settings.motorGoal;
   document.getElementById("phoneMonths").textContent=data.settings.phoneMonths;
